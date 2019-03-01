@@ -106,27 +106,6 @@ class _WeatherState extends State<Weather> {
                     ],
                   ),
                 );
-                /*
-                return ListView(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 100.0),
-                      child: Center(
-                        child: Location(location: weather.location),
-                      ),
-                    ),
-                    Center(
-                      child: LastUpdated(dateTime: weather.lastUpdated),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 50.0),
-                      child: Center(
-                        child: CombinedWeatherTemperature(weather: weather,),
-                      ),
-                    ),
-                  ],
-                );
-*/
               }
               if (state is WeatherError) {
                 return Text(
