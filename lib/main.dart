@@ -33,6 +33,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Digital Weather',
+      color: Colors.black,
       home: Weather(
         weatherRepository:weatherRepository,
       ),

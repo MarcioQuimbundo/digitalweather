@@ -32,13 +32,15 @@ class _WeatherState extends State<Weather> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Weather'),
+        title: Text('Digital Weather'),
+        backgroundColor: Colors.black,
+        centerTitle: true,
         actions: <Widget>[
-          IconButton(
+          /*IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
             },
-          ),
+          ),*/
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
@@ -55,29 +57,50 @@ class _WeatherState extends State<Weather> {
           )
         ],
       ),
-      body: Center(
-        child: BlocBuilder(
-          bloc: _weatherBloc,
-          builder: (_, WeatherState state) {
-            if (state is WeatherEmpty) {
-              return Center(child: Text('Please Select a Location'));
-            }
-            if (state is WeatherLoading) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (state is WeatherLoaded) {
-              final weather = state.weather;
-              /*final themeBloc = BlocProvider.of<ThemeBloc>(context);
-              themeBloc.dispatch(WeatherChanged(condition: weather.condition));*/
+      body: Container(
+        color: Colors.black,
+        child: Center(
+          child: BlocBuilder(
+            bloc: _weatherBloc,
+            builder: (_, WeatherState state) {
+              if (state is WeatherEmpty) {
+                return Center(child: Text('Por favor, selecione uma cidade'));
+              }
+              if (state is WeatherLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is WeatherLoaded) {
+                final weather = state.weather;
+                
+                return ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 100.0),
+                      child: Center(
+                        child: Location(location: weather.location),
+                      ),
+                    ),
+                    Center(
+                      child: LastUpdated(dateTime: weather.lastUpdated),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50.0),
+                      child: Center(
+                        child: CombinedWeatherTemperature(weather: weather,),
+                      ),
+                    ),
+                  ],
+                );
 
-            }
-            if (state is WeatherError) {
-              return Text(
-                'Something went wrong!',
-                style: TextStyle(color: Colors.red),
-              );
-            }
-          },
+              }
+              if (state is WeatherError) {
+                return Text(
+                  'Ups, alguma coisa correu mal!',
+                  style: TextStyle(color: Colors.red),
+                );
+              }
+            },
+          ),
         ),
       ),
     );
