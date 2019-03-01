@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:digitalweather/src/blocs/weather_events.dart';
-import 'package:digitalweather/src/blocs/weather_states.dart';
-import 'package:digitalweather/src/widgets/city_selection.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:digitalweather/src/widgets/weather.dart';
-import 'package:digitalweather/src/repositories/weather_api_client.dart';
-import 'package:digitalweather/src/repositories/weather_repository.dart';
-import 'package:digitalweather/src/blocs/weather_bloc.dart';
+import 'package:digitalweather/src/widgets/widgets.dart';
+import 'package:digitalweather/src/repositories/repositories.dart';
+import 'package:digitalweather/src/blocs/blocs.dart';
 
 class Weather extends StatefulWidget {
   final WeatherRepository weatherRepository;
@@ -36,8 +32,13 @@ class _WeatherState extends State<Weather> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Digital Weather'),
+        title: Text('Flutter Weather'),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+            },
+          ),
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
@@ -51,24 +52,29 @@ class _WeatherState extends State<Weather> {
                 _weatherBloc.dispatch(FetchWeather(city: city));
               }
             },
-          ),
+          )
         ],
       ),
       body: Center(
         child: BlocBuilder(
           bloc: _weatherBloc,
-          builder: (_, WeatherState state){
+          builder: (_, WeatherState state) {
             if (state is WeatherEmpty) {
-              return Center(child: Text('Please Select a Location'),);
+              return Center(child: Text('Please Select a Location'));
             }
             if (state is WeatherLoading) {
-              return Center(child: CircularProgressIndicator(),);
+              return Center(child: CircularProgressIndicator());
             }
             if (state is WeatherLoaded) {
               final weather = state.weather;
+              /*final themeBloc = BlocProvider.of<ThemeBloc>(context);
+              themeBloc.dispatch(WeatherChanged(condition: weather.condition));*/
 
-              return ListView(
-
+            }
+            if (state is WeatherError) {
+              return Text(
+                'Something went wrong!',
+                style: TextStyle(color: Colors.red),
               );
             }
           },
@@ -76,6 +82,7 @@ class _WeatherState extends State<Weather> {
       ),
     );
   }
+
   @override
   void dispose() {
     _weatherBloc.dispose();

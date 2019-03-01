@@ -19,7 +19,20 @@ class _CitySelection extends State<CitySelection> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 10.0),
+                child: TextFormField(
+                  controller: _textController,
+                  decoration: InputDecoration(
+                    labelText: 'Cidade',
+                    hintText: 'Nairobi',
+                  ),
+                ),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.pop(context, _textController.text);
+              },
             ),
           ],
         ),
